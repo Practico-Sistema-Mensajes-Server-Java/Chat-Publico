@@ -1,0 +1,43 @@
+@startuml
+
+skinparam shadowing false
+skinparam dpi 150
+skinparam linetype ortho
+skinparam wrapWidth 200
+left to right direction
+
+actor Usuario
+actor Administrador
+
+package "Casos de Uso" {
+
+  usecase "Verificación de Usuario" as UC1
+  usecase "Ver Mensajes de una Sala" as UC2
+  usecase "Publicar Mensaje en Sala" as UC3
+  usecase "Crear Sala de Chat" as UC4
+  usecase "Unirse a Sala" as UC5
+  usecase "Salir de Sala" as UC6
+  usecase "Eliminar Sala" as UC7
+  usecase "Invitar Usuario a Sala" as UC8
+  usecase "Eliminar Usuario de Sala" as UC9
+  usecase "Ver Listado de Salas" as UC10
+  usecase "Ver Listado de Usuarios" as UC11
+
+  Usuario --> UC1 : "Proporciona credenciales y salas \n a las que pertenece"
+  Usuario --> UC2 : "Consulta los mensajes"
+  Usuario --> UC3 : "Envía mensaje"
+  Usuario --> UC5 : "Se une a una sala"
+  Usuario --> UC6 : "Sale de una sala"
+  Usuario --> UC10 : "Consulta las salas disponibles"
+
+  Administrador --> UC1 : "Proporciona credenciales y salas \n a las que pertenece"
+  Administrador --> UC4 : "Crea sala de chat"
+  Administrador --> UC7 : "Elimina sala de chat"
+  Administrador --> UC8 : "Invita usuario a sala"
+  Administrador --> UC9 : "Elimina usuario de sala"
+  Administrador --> UC10 : "Consulta las salas disponibles"
+  Administrador --> UC11 : "Consulta los usuarios"
+
+}
+
+@enduml

@@ -1,0 +1,107 @@
+@startuml
+
+partition Usuario {
+    start
+    :Proporciona credenciales;
+    :Solicita ver listado de salas;
+    :Obtiene listado de salas;
+    :Mostrar listado de salas;
+    :Selecciona sala;
+    if (Sala disponible?) then (sí)
+        :Selecciona sala;
+        :Consulta los mensajes;
+        :Ver mensajes en sala;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Envía mensaje a la sala;
+    :Verifica que el mensaje no esté vacío;
+    if (Mensaje válido?) then (sí)
+        :Publica mensaje;
+        :Mensaje publicado correctamente;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Solicita unirse a sala;
+    :Verifica invitación;
+    if (Invitación válida?) then (sí)
+        :Unirse a sala;
+        :Usuario agregado a la sala;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Solicita salir de la sala;
+    :Elimina usuario de la sala;
+    :Usuario eliminado;
+    stop
+}
+
+partition Administrador {
+    start
+    :Proporciona credenciales;
+    :Solicita crear sala;
+    :Verifica si el nombre de sala es único;
+    if (Nombre único?) then (sí)
+        :Crea sala;
+        :Sala creada con éxito;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Solicita eliminar sala;
+    :Verifica si la sala tiene usuarios;
+    if (Sala sin usuarios?) then (sí)
+        :Elimina sala;
+        :Sala eliminada correctamente;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Invita usuario a sala;
+    :Verifica si la invitación ya fue enviada;
+    if (Invitación enviada?) then (sí)
+        :Envía invitación;
+        :Invitación enviada con éxito;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Elimina usuario de sala;
+    :Verifica si el usuario está en la sala;
+    if (Usuario encontrado?) then (sí)
+        :Elimina usuario de sala;
+        :Usuario eliminado con éxito;
+    else (no)
+        :Muestra mensaje de error;
+    endif
+    stop
+
+    start
+    :Solicita ver listado de salas;
+    :Obtiene listado de salas;
+    :Mostrar listado de salas;
+    stop
+
+    start
+    :Solicita ver listado de usuarios;
+    :Obtiene listado de usuarios en sala;
+    :Mostrar listado de usuarios;
+    stop
+}
+
+@enduml

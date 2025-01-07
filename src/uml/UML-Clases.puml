@@ -1,0 +1,94 @@
+@startuml
+
+
+skinparam shadowing false
+skinparam dpi 150
+skinparam linetype ortho
+skinparam packageStyle square
+skinparam wrapWidth 200
+
+package "Esquema de clases" {
+    ' Clase principal que representa un mensaje en el chat público
+    class MensajePublico {
+        + String id
+        + String remitenteId
+        + String contenido
+        + LocalDateTime fechaHora
+    }
+
+    ' Clase para representar una sala de chat público
+    class SalaChat {
+        + String id
+        + String nombreSala
+        + List<MensajePublico> mensajes
+        + List<String> usuarios
+    }
+
+    ' Clase para representar un usuario
+    class Usuario {
+        + String id
+        + String nombre
+        + List<String> salas
+        + String rol
+    }
+
+    ' Clase para credenciales de autenticación
+    class Credenciales {
+        + String idUsuario
+        + String email
+        + String password
+    }
+
+    ' Clase para manejar invitaciones a las salas
+    class Invitacion {
+        + String id
+        + String idSala
+        + String idUsuario
+    }
+
+    ' Interfaz para la lógica de repositorio de mensajes públicos
+    interface RepositorioMensajePublico {
+        + Flux<MensajePublico> obtenerTodosPorSala(String salaId)
+        + Mono<MensajePublico> guardar(MensajePublico mensaje)
+    }
+
+    ' Interfaz para manejar las salas de chat público
+    interface RepositorioSalaChat {
+        + Mono<SalaChat> obtenerPorNombre(String nombreSala)
+        + Flux<SalaChat> obtenerTodas()
+        + Mono<SalaChat> guardar(SalaChat salaChat)
+    }
+
+    ' Servicio de manejo de mensajes públicos
+    class ServicioMensajePublico {
+        + Flux<MensajePublico> listarMensajesPorSala(String salaId)
+        + Mono<MensajePublico> publicarMensaje(String salaId, MensajePublico mensaje)
+    }
+
+    ' Servicio de manejo de salas de chat público
+    class ServicioSalaChat {
+        + Mono<SalaChat> crearSala(String nombreSala, String usuarioCreadorId)
+        + Mono<Void> eliminarSala(String salaId)
+        + Mono<SalaChat> obtenerSalaPorNombre(String nombreSala)
+        + Flux<SalaChat> listarTodasLasSalas()
+        + Mono<Void> invitarUsuario(String salaId, String usuarioId)
+        + Mono<Void> unirsePorInvitacion(String salaId, String usuarioId)
+        + Mono<Void> eliminarUsuario(String salaId, String usuarioId)
+        + Mono<Void> salirDeSala(String salaId, String usuarioId)
+        + Mono<Void> verificarUsuarioEnSala(String salaId, String nuevoNombre)
+    }
+
+    ' Relaciones
+    SalaChat *-- MensajePublico : "Contiene mensajes"
+    SalaChat *-- Usuario : "Contiene usuarios"
+    SalaChat *-- Invitacion : "Tiene invitaciones"
+    Usuario o-- Credenciales : "Autenticado por"
+    Invitacion --> Usuario : "Enviada a"
+    ServicioMensajePublico --> RepositorioMensajePublico : "Usa"
+    ServicioMensajePublico --> MensajePublico : "Gestiona mensajes"
+    ServicioSalaChat --> RepositorioSalaChat : "Usa"
+    ServicioSalaChat --> Invitacion : "Gestiona"
+    ServicioSalaChat --> SalaChat : "Gestiona"
+}
+
+@enduml
