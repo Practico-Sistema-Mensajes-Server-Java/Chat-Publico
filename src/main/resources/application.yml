@@ -10,10 +10,18 @@ spring:
 
   # Configuración de RabbitMQ para la conexión de mensajería
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000  # 1 segundo
+          multiplier: 2.0        # Incrementa el tiempo de espera en cada intento
+          max-interval: 10000    # Máximo tiempo entre intentos (10 segundos)
+          max-attempts: 5        # Intentos máximos
 
   jpa:
     hibernate:
@@ -50,7 +58,8 @@ logging:
     root: INFO
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
-    org.springframework.amqp: WARN
+    org.springframework.amqp: DEBUG
+    org.springframework.boot.docker.compose: DEBUG
     com.myproyect.springboot: DEBUG
 
 management:
