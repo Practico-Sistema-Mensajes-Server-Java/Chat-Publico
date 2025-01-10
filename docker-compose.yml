@@ -1,0 +1,48 @@
+services:
+  mysql-chat-publico:
+    image: mysql:8.0
+    hostname: mysql-chat-publico
+    environment:
+      - MYSQL_DATABASE=Chat-Publico
+      - MYSQL_ROOT_PASSWORD=P@ssw0rd
+    ports:
+      - "3355:3306"
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-P", "3306", "-u", "root", "-pP@ssw0rd"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  chat-publico:
+    build:
+      context: ./
+    container_name: chat-publico
+    ports:
+      - "8085:8095"
+    networks:
+      - backend-network
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-chat-publico:3306/Chat-Publico?serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=P@ssw0rd
+    depends_on:
+      mysql-chat-publico:
+        condition: service_healthy
+    entrypoint:
+      [
+        "./wait-for-it.sh", "eureka-server:8761", "-t", "60", "--",
+        "./wait-for-it.sh", "mysql-chat-publico:3306", "-t", "60", "--",
+        "java", "-jar", "/app/chat-publico.jar"
+      ]
+
+volumes:
+  mysql-data:
+
+
+networks:
+  backend-network:
+    external: true
