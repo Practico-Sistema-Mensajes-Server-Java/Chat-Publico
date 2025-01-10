@@ -24,12 +24,13 @@ public class UsuarioResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> getUsuario(@PathVariable final Long id) {
-        return ResponseEntity.ok(usuarioService.get(id));
+        return ResponseEntity.ok(usuarioService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<Long> createUsuario(@RequestBody final UsuarioDTO usuarioDTO) {
-        return ResponseEntity.ok(usuarioService.create(usuarioDTO));
+        usuarioService.create(usuarioDTO);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")

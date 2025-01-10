@@ -30,13 +30,18 @@ public class SalaChat {
     @JoinColumn(name = "usuarios")
     private List<Usuario> usuarios;
 
+    @OneToMany
+    @JoinColumn(name = "invitaciones")
+    private List<Invitacion> invitaciones;
+
     public SalaChat() {
     }
 
-    public SalaChat(String nombre, LocalDateTime fechaCreacion, List<MensajePublico> mensajes, List<Usuario> usuarios) {
+    public SalaChat(String nombre, LocalDateTime fechaCreacion, List<MensajePublico> mensajes, List<Usuario> usuarios, List<Invitacion> invitaciones) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.mensajes = mensajes;
         this.usuarios = usuarios;
+        this.invitaciones = invitaciones;
     }
 }

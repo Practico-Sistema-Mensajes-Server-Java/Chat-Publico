@@ -7,6 +7,14 @@ spring:
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
+
+  # Configuración de RabbitMQ para la conexión de mensajería
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -42,6 +50,7 @@ logging:
     root: INFO
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
+    org.springframework.amqp: WARN
     com.myproyect.springboot: DEBUG
 
 management:

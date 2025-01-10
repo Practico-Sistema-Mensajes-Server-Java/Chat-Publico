@@ -5,8 +5,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.main_java.chatpublico.domain.Invitacion;
 import org.main_java.chatpublico.domain.MensajePublico;
 import org.main_java.chatpublico.domain.SalaChat;
+import org.main_java.chatpublico.domain.Usuario;
 
 import java.util.List;
 
@@ -28,4 +30,6 @@ public class UsuarioDTO {
     private List<MensajePublico> mensajes;
 
     private List<SalaChat> salas;
+
+    private List<Invitacion> invitaciones;
 }

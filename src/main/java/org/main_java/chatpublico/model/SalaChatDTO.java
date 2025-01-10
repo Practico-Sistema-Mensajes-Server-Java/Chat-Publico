@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.main_java.chatpublico.domain.Invitacion;
 import org.main_java.chatpublico.domain.MensajePublico;
 import org.main_java.chatpublico.domain.Usuario;
 
@@ -30,4 +31,6 @@ public class SalaChatDTO {
 
     @NotNull
     private List<Usuario> usuarios;
+
+    private List<Invitacion> invitaciones;
 }

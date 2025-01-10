@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Data
@@ -18,7 +20,7 @@ public class MensajePublicoDTO {
     private String mensaje;
 
     @NotNull
-    private String fecha;
+    private LocalDateTime fecha;
 
     @NotNull
     private Long id_usuario;

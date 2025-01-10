@@ -30,13 +30,18 @@ public class Usuario {
         @JoinColumn(name = "salas")
         private List<SalaChat> salas;
 
+        @OneToMany
+        @JoinColumn(name = "invitaciones")
+        private List<Invitacion> invitaciones;
+
         public Usuario() {
         }
 
-        public Usuario(String nombre, String rol, List<MensajePublico> mensajes, List<SalaChat> salas) {
+        public Usuario(String nombre, String rol, List<MensajePublico> mensajes, List<SalaChat> salas, List<Invitacion> invitaciones) {
             this.nombre = nombre;
             this.rol = rol;
             this.mensajes = mensajes;
             this.salas = salas;
+            this.invitaciones = invitaciones;
         }
 }
