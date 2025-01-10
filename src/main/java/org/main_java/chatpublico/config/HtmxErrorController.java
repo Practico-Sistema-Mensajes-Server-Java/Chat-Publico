@@ -1,4 +1,4 @@
 package org.main_java.chatpublico.config;
 
-public class WebUtils {
+public class HtmxErrorController {
 }
