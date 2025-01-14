@@ -1,6 +1,5 @@
 @startuml
 
-
 skinparam shadowing false
 skinparam dpi 150
 skinparam linetype ortho
@@ -48,34 +47,34 @@ package "Esquema de clases" {
 
     ' Interfaz para la lógica de repositorio de mensajes públicos
     interface RepositorioMensajePublico {
-        + Flux<MensajePublico> obtenerTodosPorSala(String salaId)
-        + Mono<MensajePublico> guardar(MensajePublico mensaje)
+        + List<MensajePublico> obtenerTodosPorSala(String salaId)
+        + MensajePublico guardar(MensajePublico mensaje)
     }
 
     ' Interfaz para manejar las salas de chat público
     interface RepositorioSalaChat {
-        + Mono<SalaChat> obtenerPorNombre(String nombreSala)
-        + Flux<SalaChat> obtenerTodas()
-        + Mono<SalaChat> guardar(SalaChat salaChat)
+        + SalaChat obtenerPorNombre(String nombreSala)
+        + List<SalaChat> obtenerTodas()
+        + SalaChat guardar(SalaChat salaChat)
     }
 
     ' Servicio de manejo de mensajes públicos
     class ServicioMensajePublico {
-        + Flux<MensajePublico> listarMensajesPorSala(String salaId)
-        + Mono<MensajePublico> publicarMensaje(String salaId, MensajePublico mensaje)
+        + List<MensajePublico> listarMensajesPorSala(String salaId)
+        + MensajePublico publicarMensaje(String salaId, MensajePublico mensaje)
     }
 
     ' Servicio de manejo de salas de chat público
     class ServicioSalaChat {
-        + Mono<SalaChat> crearSala(String nombreSala, String usuarioCreadorId)
-        + Mono<Void> eliminarSala(String salaId)
-        + Mono<SalaChat> obtenerSalaPorNombre(String nombreSala)
-        + Flux<SalaChat> listarTodasLasSalas()
-        + Mono<Void> invitarUsuario(String salaId, String usuarioId)
-        + Mono<Void> unirsePorInvitacion(String salaId, String usuarioId)
-        + Mono<Void> eliminarUsuario(String salaId, String usuarioId)
-        + Mono<Void> salirDeSala(String salaId, String usuarioId)
-        + Mono<Void> verificarUsuarioEnSala(String salaId, String nuevoNombre)
+        + SalaChat crearSala(String nombreSala, String usuarioCreadorId)
+        + void eliminarSala(String salaId)
+        + SalaChat obtenerSalaPorNombre(String nombreSala)
+        + List<SalaChat> listarTodasLasSalas()
+        + void invitarUsuario(String salaId, String usuarioId)
+        + void unirsePorInvitacion(String salaId, String usuarioId)
+        + void eliminarUsuario(String salaId, String usuarioId)
+        + void salirDeSala(String salaId, String usuarioId)
+        + void verificarUsuarioEnSala(String salaId, String nuevoNombre)
     }
 
     ' Relaciones
