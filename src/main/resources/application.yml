@@ -3,9 +3,26 @@ spring:
     url: jdbc:mysql://mysql-chat-publico:3306/Chat-Publico?serverTimezone=UTC
     username: root
     password: P@ssw0rd
+
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
+
+  # Configuración de RabbitMQ para la conexión de mensajería
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000  # 1 segundo
+          multiplier: 2.0        # Incrementa el tiempo de espera en cada intento
+          max-interval: 10000    # Máximo tiempo entre intentos (10 segundos)
+          max-attempts: 5        # Intentos máximos
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,12 +35,16 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
+
   application:
     name: chat-publico
+
 server:
   port: 8095
+
 jwt:
   secret: securesecretkey
+
 error:
   handling:
     http-status-in-json-response: true
@@ -31,23 +52,29 @@ error:
     full-stacktrace-http-statuses: 5xx
     log-levels:
       5xx: ERROR
+
 logging:
   level:
     root: INFO
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
+    org.springframework.amqp: DEBUG
+    org.springframework.boot.docker.compose: DEBUG
     com.myproyect.springboot: DEBUG
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
 eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
+
 metrics:
   export:
     prometheus:

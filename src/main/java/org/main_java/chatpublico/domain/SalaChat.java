@@ -3,7 +3,6 @@ package org.main_java.chatpublico.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,22 +16,26 @@ public class SalaChat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "fecha_creacion", nullable = false)
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
-    @OneToMany(mappedBy = "salaChat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "mensajes")
     private List<MensajePublico> mensajes;
 
-    @ManyToMany(mappedBy = "salas")
+    @ManyToMany
+    @JoinColumn(name = "usuarios")
     private List<Usuario> usuarios;
 
-    @OneToMany(mappedBy = "salaChat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "invitaciones")
     private List<Invitacion> invitaciones;
 
-    public SalaChat() {}
+    public SalaChat() {
+    }
 
     public SalaChat(String nombre, LocalDateTime fechaCreacion, List<MensajePublico> mensajes, List<Usuario> usuarios, List<Invitacion> invitaciones) {
         this.nombre = nombre;

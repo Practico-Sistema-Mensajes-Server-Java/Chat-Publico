@@ -1,10 +1,12 @@
 package org.main_java.chatpublico.service;
 
 import jakarta.transaction.Transactional;
+import org.main_java.chatpublico.config.RabbitMQConfig;
 import org.main_java.chatpublico.domain.MensajePublico;
 import org.main_java.chatpublico.domain.SalaChat;
 import org.main_java.chatpublico.domain.Usuario;
 import org.main_java.chatpublico.model.MensajePublicoDTO;
+import org.main_java.chatpublico.rabbitMQ.RabbitMQProducer;
 import org.main_java.chatpublico.repos.MensajePublicoRepository;
 import org.main_java.chatpublico.repos.SalaChatRepository;
 import org.main_java.chatpublico.repos.UsuarioRepository;
@@ -22,6 +24,9 @@ public class MensajePublicoService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
 
     private final SalaChatRepository salaChatRepository;
 
@@ -88,7 +93,18 @@ public class MensajePublicoService {
         }
 
         MensajePublico mensajePublico = mapToEntity(mensajePublicoDTO);
+        usuarioRepository.getReferenceById(mensajePublicoDTO.getId_usuario())
+                .getMensajes().add(mensajePublico);
+        salaChatRepository.getReferenceById(mensajePublicoDTO.getId_sala())
+                .getMensajes().add(mensajePublico);
         mensajePublicoRepository.save(mensajePublico);
+
+        // Notificar a RabbitMQ
+        rabbitMQProducer.enviarMensaje(
+                RabbitMQConfig.NOMBRE_INTERCAMBIO,
+                RabbitMQConfig.CLAVE_ENRUTAMIENTO,
+                "Mensaje creado [ " + "ID: " + mensajePublico.getId() + "Mensaje: " + mensajePublico.getMensaje() + " ]"
+        );
     }
 
     @Transactional
@@ -139,6 +155,13 @@ public class MensajePublicoService {
 
         mensajePublico.setMensaje(mensaje);
         mensajePublicoRepository.save(mensajePublico);
+
+        // Notificar a RabbitMQ
+        rabbitMQProducer.enviarMensaje(
+                RabbitMQConfig.NOMBRE_INTERCAMBIO,
+                RabbitMQConfig.CLAVE_ENRUTAMIENTO,
+                "Mensaje actualizado [ " + "ID: " + mensajePublico.getId() + "Mensaje: " + mensajePublico.getMensaje() + " ]"
+        );
     }
 
     @Transactional
@@ -150,7 +173,18 @@ public class MensajePublicoService {
         MensajePublico mensajePublico = mensajePublicoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("El mensaje no existe"));
 
+        usuarioRepository.getReferenceById(mensajePublico.getUsuario().getId())
+                .getMensajes().remove(mensajePublico);
+        salaChatRepository.getReferenceById(mensajePublico.getSalaChat().getId())
+                .getMensajes().remove(mensajePublico);
         mensajePublicoRepository.delete(mensajePublico);
+
+        // Notificar a RabbitMQ
+        rabbitMQProducer.enviarMensaje(
+                RabbitMQConfig.NOMBRE_INTERCAMBIO,
+                RabbitMQConfig.CLAVE_ENRUTAMIENTO,
+                "Mensaje eliminado: [ " + "ID: " + id + " ]"
+        );
     }
 
     private MensajePublico mapToEntity (MensajePublicoDTO mensajePublicoDTO) {

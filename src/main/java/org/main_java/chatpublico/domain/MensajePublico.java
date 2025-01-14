@@ -3,7 +3,6 @@ package org.main_java.chatpublico.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,21 +15,22 @@ public class MensajePublico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "mensaje", nullable = false)
+    @Column(name = "mensaje")
     private String mensaje;
 
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "fecha")
     private LocalDateTime fecha;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_sala", nullable = false)
+    @JoinColumn(name = "id_sala")
     private SalaChat salaChat;
 
-    public MensajePublico() {}
+    public MensajePublico() {
+    }
 
     public MensajePublico(String mensaje, LocalDateTime fecha, Usuario usuario, SalaChat salaChat) {
         this.mensaje = mensaje;
@@ -38,4 +38,5 @@ public class MensajePublico {
         this.usuario = usuario;
         this.salaChat = salaChat;
     }
+
 }
