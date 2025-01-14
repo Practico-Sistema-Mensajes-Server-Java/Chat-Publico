@@ -36,7 +36,7 @@ public class SalaChatService {
     }
 
     @Transactional
-    public SalaChat create (SalaChatDTO salaChatDTO, Long id_usuario) {
+    public SalaChatDTO create (SalaChatDTO salaChatDTO, Long id_usuario) {
 
         Usuario usuario = usuarioRepository.findById(id_usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -47,7 +47,7 @@ public class SalaChatService {
 
         SalaChat salaChat = mapToEntity(salaChatDTO);
 
-        return salaChatRepository.save(salaChat);
+        return mapToDTO(salaChatRepository.save(salaChat));
     }
 
     @Transactional
