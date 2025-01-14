@@ -157,7 +157,7 @@ public class SalaChatService {
             throw new RuntimeException("Invitacion no corresponde a la sala de chat");
         }
 
-        if (!invitacion.getId_usuarioReceptor().equals(id_usuario)) {
+        if (!invitacion.getIdUsuarioReceptor().equals(id_usuario)) {
             throw new RuntimeException("Invitacion no corresponde al usuario");
         }
 

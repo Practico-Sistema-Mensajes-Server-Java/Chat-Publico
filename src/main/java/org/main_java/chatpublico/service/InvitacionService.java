@@ -58,8 +58,7 @@ public class InvitacionService {
             throw new IllegalArgumentException("La sala asociada a la invitación no es válida");
         }
         invitacionDTO.setId_sala(salaChat.getId());
-
-        invitacionDTO.setId_usuario_receptor(invitacion.getId_usuarioReceptor());
+        invitacionDTO.setId_usuario_receptor(invitacion.getIdUsuarioReceptor());
         invitacionDTO.setMensaje(invitacion.getMensaje());
 
         return invitacionDTO;
@@ -81,9 +80,9 @@ public class InvitacionService {
         SalaChat salaChat = salaChatRepository.findById(invitacionDTO.getId_sala())
                 .orElseThrow(() -> new IllegalArgumentException("La sala con ID " + invitacionDTO.getId_sala() + " no existe"));
         invitacion.setSalaChat(salaChat);
-
-        invitacion.setId_usuarioReceptor(invitacionDTO.getId_usuario_receptor());
+        invitacion.setIdUsuarioReceptor(invitacionDTO.getId_usuario_receptor());
         invitacion.setMensaje(invitacionDTO.getMensaje());
+
 
         return invitacion;
     }
