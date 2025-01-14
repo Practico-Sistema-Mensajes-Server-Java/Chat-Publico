@@ -18,24 +18,29 @@ public class Invitacion {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @Column(name = "mensaje")
+    @Column(name = "mensaje", nullable = false)
     private Mensaje mensaje;
 
-    @Column(name = "usuario_receptor")
-    private Long id_usuarioReceptor;
+    @Column(name = "usuario_receptor", nullable = false)
+    private Long idUsuarioReceptor;
 
     @ManyToOne
-    @JoinColumn(name = "id_sala")
+    @JoinColumn(name = "id_sala", nullable = false)
     private SalaChat salaChat;
 
-    public Invitacion() {
-    }
+    @Column(name = "fecha", nullable = false)
+    private LocalDateTime fecha;
 
-    public Invitacion(Usuario usuario, SalaChat salaChat) {
+    public Invitacion() {}
+
+    public Invitacion(Usuario usuario, Mensaje mensaje, Long idUsuarioReceptor, SalaChat salaChat, LocalDateTime fecha) {
         this.usuario = usuario;
+        this.mensaje = mensaje;
+        this.idUsuarioReceptor = idUsuarioReceptor;
         this.salaChat = salaChat;
+        this.fecha = fecha;
     }
 }
